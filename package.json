@@ -1,0 +1,14 @@
+{
+  "name": "streampulse",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.17"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test",
+    "replay": "node replay.js"
+  }
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "ApexArcade",
+    "traffic": 18,
+    "phase": 0
+  },
+  {
+    "name": "NightShift",
+    "traffic": 5,
+    "phase": 4
+  },
+  {
+    "name": "PixelHarbor",
+    "traffic": 1,
+    "phase": 8
+  }
+]

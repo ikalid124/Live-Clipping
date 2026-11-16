@@ -1,0 +1,281 @@
+* {
+  box-sizing: border-box;
+}
+html {
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  background: #0c1014;
+  color: #e5ebeb;
+  font:
+    15px/1.5 "Segoe UI",
+    Arial,
+    sans-serif;
+}
+aside {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 208px;
+  padding: 30px 17px;
+  background: #10171b;
+  border-right: 1px solid #273137;
+  display: flex;
+  flex-direction: column;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 54px;
+}
+.brand b {
+  background: #9fe6bc;
+  color: #102e20;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 9px;
+  font-size: 27px;
+  line-height: 29px;
+}
+a {
+  color: #a5e7c1;
+  text-decoration: none;
+}
+.brand,
+nav a {
+  color: inherit;
+}
+small,
+label,
+.sub {
+  color: #a3b2b9;
+}
+small {
+  letter-spacing: 0.12em;
+  font-size: 10px;
+  font-weight: 700;
+}
+nav {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+}
+nav a {
+  padding: 10px 14px;
+  border-radius: 7px;
+  color: #afbcc1;
+}
+nav a.active,
+nav a:hover {
+  background: #23332d;
+  color: #b9f4cc;
+}
+.bottom {
+  margin-top: auto;
+}
+main {
+  margin-left: 208px;
+  padding: 0 clamp(18px, 4vw, 66px) 70px;
+  max-width: 1700px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 70px;
+  border-bottom: 1px solid #263137;
+  color: #93a3aa;
+  font-size: 13px;
+}
+h1 {
+  font-size: clamp(28px, 3vw, 42px);
+  letter-spacing: -0.05em;
+  margin: 30px 0 20px;
+}
+h2 {
+  font-size: 20px;
+  letter-spacing: -0.035em;
+  margin: 22px 0 12px;
+}
+h3 {
+  margin: 4px 0;
+}
+p {
+  margin: 6px 0 14px;
+}
+.stats,
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+}
+.card,
+article,
+form,
+details {
+  background: #151d22;
+  border: 1px solid #2a353b;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.stats strong {
+  display: block;
+  font-size: 29px;
+}
+.row,
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.row {
+  justify-content: space-between;
+}
+.toolbar {
+  margin: 12px 0;
+}
+.tag,
+.score {
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 5px;
+  background: #263239;
+  padding: 3px 8px;
+  color: #d0dbdf;
+}
+.score {
+  background: #233e32;
+  color: #a6efbf;
+  font-weight: bold;
+}
+.accent {
+  color: #a6efbf;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  border: 1px solid #3a484e;
+  border-radius: 6px;
+  background: #11191d;
+  color: inherit;
+  padding: 7px 10px;
+}
+button {
+  cursor: pointer;
+  background: #25332f;
+}
+button:hover {
+  border-color: #aadbb9;
+}
+button.primary {
+  background: #9be0b5;
+  color: #102c1c;
+  font-weight: 650;
+}
+label {
+  display: grid;
+  gap: 4px;
+  margin: 7px 0;
+}
+input[type="checkbox"] {
+  accent-color: #9be0b5;
+}
+label.check {
+  display: flex;
+  align-items: center;
+}
+textarea {
+  width: 100%;
+}
+canvas {
+  width: 100%;
+  height: 125px;
+  display: block;
+}
+.timeline {
+  background: linear-gradient(115deg, #192924, #141e23 70%);
+}
+.event {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  padding: 15px 0;
+  border-top: 1px solid #2d383d;
+}
+.event:hover strong {
+  color: #9be0b5;
+}
+.event .sub {
+  font-size: 13px;
+}
+.event .score {
+  justify-self: start;
+}
+#notice:not(:empty) {
+  position: sticky;
+  top: 8px;
+  background: #393521;
+  padding: 10px 16px;
+  border-radius: 7px;
+  z-index: 2;
+}
+video {
+  max-width: 100%;
+}
+summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+:focus-visible {
+  outline: 2px solid #98edb5;
+  outline-offset: 2px;
+}
+@media (max-width: 780px) {
+  aside {
+    position: static;
+    width: 100%;
+    display: block;
+    padding: 12px 16px;
+  }
+  .brand {
+    margin: 0;
+  }
+  .bottom,
+  nav {
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: 4px 0;
+  }
+  aside small {
+    display: none;
+  }
+  nav a {
+    padding: 5px 8px;
+  }
+  main {
+    margin: 0;
+  }
+  header {
+    min-height: 48px;
+  }
+  .event {
+    grid-template-columns: 42px 1fr;
+  }
+  .event > .tag {
+    grid-column: 2;
+  }
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

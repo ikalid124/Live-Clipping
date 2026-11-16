@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StreamPulse · Highlight desk</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <aside>
+      <a class="brand" href="#dashboard"><b>∿</b> StreamPulse</a
+      ><small>WORKSPACE</small>
+      <nav>
+        <a href="#dashboard">Overview</a><a href="#queue">Review queue</a
+        ><a href="#channels">Watchlist</a><a href="#activity">Live activity</a>
+      </nav>
+      <nav class="bottom"><a href="#settings">Settings</a></nav>
+    </aside>
+    <main>
+      <header>
+        <span>Workspace / <strong id="crumb">Overview</strong></span
+        ><span id="health">Connecting…</span>
+      </header>
+      <div role="status" id="notice"></div>
+      <section id="view"></section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
