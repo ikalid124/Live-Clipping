@@ -1,5 +1,7 @@
 # StreamPulse
 
+Moving to another computer? Start with [the transfer guide](docs/NEW_COMPUTER.md). Development context is in [PROJECT_STATUS.md](PROJECT_STATUS.md), [V4_PROGRESS_REPORT.md](V4_PROGRESS_REPORT.md), [the project conversation](docs/CONVERSATION_HISTORY.md), and [the original requests](docs/requests/). Conversation entries are historical evidence, not a replacement for current status.
+
 A local livestream highlight desk for Windows. The demo works immediately and sends simulated chat through the same detector as Twitch. The first launch seeds three channels and their detected bookmarks. More chat arrives every five seconds.
 
 ## Launch on Windows

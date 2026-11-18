@@ -57,6 +57,12 @@ The existing account is authenticated with chat-read permission and restores fro
 
 ## Run history
 
+### November 17, 2026 — GitHub transfer preparation
+
+Prepared publication to the user-designated public repository https://github.com/ikalid124/Live-Clipping. Added docs/NEW_COMPUTER.md, the five original request attachments under docs/requests, and docs/CONVERSATION_HISTORY.md containing available user/assistant messages from this project chat. The conversation export excludes internal reasoning, tool logs, screenshots and unrelated chats; local attachment references were replaced. It is a historical transcript, while this file remains the operational handoff. Explicitly ignored node_modules, local environment variants and DPAPI files.
+
+Checked repository history and pending files for common credential patterns; the only match was the synthetic Discord test URL. Credential/database paths are not tracked. No code changes or application tests were needed for this transfer. GitHub CLI has no active login; read-only Git access confirmed the destination has no branches. Publishing uses Git Credential Manager if available. The first sandbox network check failed and succeeded with authorized network access. Credentials and private runtime data remain local. Next step is to push and verify the remote commit, then clone on the other computer using docs/NEW_COMPUTER.md. Existing V4 validation gaps remain unchanged.
+
 ### November 17, 2026 — source checkpoint and context handoff
 
 Created branch `codex/streampulse-v4-checkpoint` in the existing repository to preserve its initial checkpoint history. Included the accumulated implementation, regression tests, replay tools, research, live evidence and V2/V4 reports. Updated the current verification summary to distinguish V4 results from historical runs. Git diff whitespace checks passed; a targeted credential-pattern scan found only the synthetic Discord test URL. The environment example contains blank credential fields. Runtime data and .env remain excluded. No remote publication was requested.
@@ -113,3 +119,9 @@ Added per-channel metrics and explicit connection states, immediate stream-statu
 All 21 automated tests passed, including new metric, queue, SSE alert and review-restart assertions. Chrome smoke testing passed, including an injected fetch outage and successful recovery. Inspected genuine EsfandTV activity in Chrome. Replay found six scripted highlights. The challenge benchmark found six of seven expected highlights and missed the quiet scene, with zero false positives or duplicates. The initial sandbox run blocked two local-socket tests, and the approved rerun passed. No application test failures remain.
 
 Controlled downstream injection verified candidate creation, queue listing, alert transmission and mocked archive resolution in isolated databases. Real natural highlight/video matching, desktop notification display, Discord delivery, live reconnect handoff and broadcaster restart remain unverified. Desktop alerts are disabled and no Discord webhook is configured. Both channels retain bookmark mode. The next reproducible step is opening the Twitch monitoring link above, confirming an increasing processed-message count, and reviewing the next natural candidate. Full results and official API references are in LIVE_TEST_REPORT.md.
+
+### November 17, 2026 — Desktop project copy
+
+Copied the complete project folder, including hidden Git history, to C:\Users\ikali\OneDrive\Desktop\StreamPulse at the user's request. The original working folder remains in place. Verified the Desktop copy resolves commit 738f685, contains PROJECT_STATUS.md and had a clean working tree before this handoff entry. No application code changed or tests rerun. No copy failures occurred. This handoff entry is a documentation change after the checkpoint commit.
+
+Runtime SQLite data, media and Windows-protected credentials remain in the existing user's LocalAppData StreamPulse folder; they were not duplicated. Existing launcher verification and notification setup requirements remain as documented above. Next step: open C:\Users\ikali\OneDrive\Desktop\StreamPulse in Codex, read this status and V4_PROGRESS_REPORT.md, and continue from that copy. Avoid concurrent edits in the two project folders.
