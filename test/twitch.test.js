@@ -68,10 +68,15 @@ test("fresh WebSocket subscribes, deduplicates, reports raids and retries discon
     gap() {},
     error() {},
     health: (...s) => statuses.push(s),
-    list: () => [{ remote: "9", id: 1 }, { remote: "10", id: 2, name: "second" }],
+    list: () => [
+      { remote: "9", id: 1 },
+      { remote: "10", id: 2, name: "second" },
+    ],
     message: (...m) => messages.push(m),
     raid: (id) => raids.push(id),
   });
+  let watched = a.hooks.list();
+  a.hooks.list = () => watched;
   const original = globalThis.WebSocket;
   let ws;
   globalThis.WebSocket = class {
@@ -91,8 +96,14 @@ test("fresh WebSocket subscribes, deduplicates, reports raids and retries discon
   const subs = [];
   a.api = async (...v) => {
     const request = v[3];
+    if (v[2] === "DELETE") return [];
     subs.push(request);
-    if (request.type === "channel.chat.notification" && request.condition.broadcaster_user_id === "10") throw Error("Twitch eventsub/subscriptions returned 403");
+    if (
+      request.type === "channel.chat.notification" &&
+      request.condition.broadcaster_user_id === "10"
+    )
+      throw Error("Twitch eventsub/subscriptions returned 403");
+    return [{ id: "sub" + subs.length }];
   };
   await a.start();
   const send = (type, p, id = "1") =>
@@ -110,9 +121,18 @@ test("fresh WebSocket subscribes, deduplicates, reports raids and retries discon
     session: { id: "s", keepalive_timeout_seconds: 10 },
   });
   assert.equal(subs.length, 4);
-  assert.deepEqual(statuses, [[1,"Subscribed"],[2,"Subscribed"]]);
-  await send("revocation", {subscription:{type:"channel.chat.notification",condition:{broadcaster_user_id:"9"},status:"authorization_revoked"}});
-  assert.equal(a.status,"EventSub connected");
+  assert.deepEqual(statuses, [
+    [1, "Subscribed"],
+    [2, "Subscribed"],
+  ]);
+  await send("revocation", {
+    subscription: {
+      type: "channel.chat.notification",
+      condition: { broadcaster_user_id: "9" },
+      status: "authorization_revoked",
+    },
+  });
+  assert.equal(a.status, "EventSub connected");
   const payload = {
     subscription: { type: "channel.chat.message" },
     event: {
@@ -134,7 +154,50 @@ test("fresh WebSocket subscribes, deduplicates, reports raids and retries discon
     "2",
   );
   assert.deepEqual(raids, [1]);
+  const originalSocket = ws;
+  watched = [watched[0], { remote: "11", id: 3, name: "third" }];
+  await a.updateWatchlist();
+  assert.equal(ws, originalSocket);
+  assert.equal(
+    subs.filter(
+      (r) =>
+        r.condition.broadcaster_user_id === "9" &&
+        r.type === "channel.chat.message",
+    ).length,
+    1,
+  );
+  await ws.onmessage({ data: "{" });
+  await send(
+    "notification",
+    {
+      subscription: { type: "channel.chat.message" },
+      event: { broadcaster_user_id: "9", message: null },
+    },
+    "broken",
+  );
+  assert.equal(ws, originalSocket);
+  assert.equal(a.timer, null);
+  await send("session_reconnect", { session: { reconnect_url: "wss://eventsub.wss.twitch.tv/ws?reconnect=test" } });
+  assert.notEqual(ws, originalSocket);
+  const subscriptionCount = subs.length;
+  await send("session_welcome", { session: { id: "handoff", keepalive_timeout_seconds: null } });
+  assert.equal(subs.length, subscriptionCount);
+  assert.equal(a.heartbeat, 10);
+  assert.equal(a.session, "handoff");
   ws.onclose();
   assert.match(a.status, /retrying/);
   assert.ok(a.timer);
+  assert.equal(a.sockets.size, 0);
+});
+
+test("rejected token refresh clears the authenticated identity", async t => {
+  const adapter = make();
+  adapter.client = { id: "fixture", secret: "fixture" };
+  adapter.token = { access_token: "fixture", refresh_token: "fixture" };
+  adapter.user = "old-user";
+  t.mock.method(globalThis, "fetch", async url =>
+    new Response(null, { status: url.endsWith("/validate") ? 401 : 400 }));
+  await assert.rejects(adapter.validate(), /exchange failed/);
+  assert.equal(adapter.user, null);
+  assert.equal(adapter.checked, 0);
 });

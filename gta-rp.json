@@ -1,0 +1,38 @@
+{
+  "Pursuit": [
+    "10-80",
+    "pursuit",
+    "pit maneuver",
+    "spike strips",
+    "getaway",
+    "lost the cops"
+  ],
+  "Police encounter": [
+    "traffic stop",
+    "pulled over",
+    "cuffed",
+    "miranda",
+    "under arrest"
+  ],
+  "Betrayal": [
+    "betrayed",
+    "he snitched",
+    "double cross",
+    "set him up",
+    "ocean dumped"
+  ],
+  "RP drama": [
+    "broke character",
+    "heated",
+    "plot twist",
+    "crashing out",
+    "in character"
+  ],
+  "Awkward moment": ["awkward", "the silence", "secondhand embarrassment"],
+  "Unexpected failure": [
+    "scuffed",
+    "he fumbled",
+    "mission failed",
+    "botched heist"
+  ]
+}

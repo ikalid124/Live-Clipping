@@ -55,8 +55,14 @@ test("dashboard, watchlist, local recording association, review and restart", as
   assert.ok(s.events.every((e) => e.media === "Bookmark" && !e.clips.length));
   const id = s.events[0].id;
   assert.equal(
-    (await post("review", { id, decision: "Approved", note: "Good moment" }))
-      .status,
+    (
+      await post("review", {
+        id,
+        decision: "Approved",
+        rating: "Excellent",
+        note: "Good moment",
+      })
+    ).status,
     200,
   );
   assert.equal(
@@ -83,24 +89,57 @@ test("dashboard, watchlist, local recording association, review and restart", as
   };
   assert.equal((await post("channel", update)).status, 200);
   assert.equal((await get("/api/state")).channels[0].live, 0);
-  const candidate = s.events.find(e => e.channel === c.id);
-  await post("channel", {...update, mode:"local"});
-  writeFileSync(join(dir,"media","owned.mp4"),"fixture bytes");
-  const local={id:candidate.id, name:"owned.mp4", authorized:false};
-  assert.equal((await post("local",local)).status,400);
-  assert.equal((await post("local",{...local,authorized:true})).status,200);
-  assert.equal(await (await fetch(root+"/media/"+candidate.id)).text(),"fixture bytes");
+  const candidate = s.events.find((e) => e.channel === c.id);
+  await post("channel", { ...update, mode: "local" });
+  writeFileSync(join(dir, "media", "owned.mp4"), "fixture bytes");
+  const local = { id: candidate.id, name: "owned.mp4", authorized: false };
+  assert.equal((await post("local", local)).status, 400);
+  assert.equal(
+    (await post("local", { ...local, authorized: true })).status,
+    200,
+  );
+  assert.equal(
+    await (await fetch(root + "/media/" + candidate.id)).text(),
+    "fixture bytes",
+  );
   assert.equal(
     (await post("channel", { ...update, mode: "native" })).status,
     400,
   );
   await post("settings", { ...s.settings, discord: true, notify: 40 });
+  for (const decision of ["Rejected", "Saved", "Approved"]) {
+    await post("review", { id, decision, rating: "Excellent", note: "Good moment" });
+    await stop();
+    await start();
+    const saved = await get("/api/event/" + id);
+    assert.equal(saved.decision, decision);
+    assert.equal(saved.rating, "Excellent");
+    assert.equal(saved.note, "Good moment");
+  }
   await stop();
   await start();
   const e = await get("/api/event/" + id);
   assert.equal(e.decision, "Approved");
   assert.equal(e.note, "Good moment");
+  assert.equal(e.rating, "Excellent");
+  const q =
+    "/api/queue?source=Demo&decision=Approved&channel=" +
+    e.channel +
+    "&category=" +
+    encodeURIComponent(e.evidence.category) +
+    "&min=50";
+  assert.equal((await get(q))[0].id, id);
+  assert.ok((await get(q))[0].adjustment > 0);
+  assert.equal((await get("/api/state?source=Twitch")).counts.total, 0);
+  assert.deepEqual(await get("/api/queue?source=Twitch"), []);
+  await post("resetPreferences", {});
+  assert.equal((await get(q))[0].adjustment, 0);
+  assert.equal((await get(q))[0].rating, "Excellent");
   assert.equal((await get("/api/state")).channels.length, 4);
   const recovered = await get("/api/state");
   assert.equal(recovered.settings.discord, true);
+  assert.equal((await post("testNotification", { destination: "discord" })).status, 400);
+  const checks = (await get("/api/state")).notificationChecks;
+  assert.equal(checks[0].destination, "discord");
+  assert.match(checks[0].result, /DISCORD_WEBHOOK_URL/);
 });

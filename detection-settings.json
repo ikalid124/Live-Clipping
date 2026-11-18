@@ -1,0 +1,9 @@
+{
+  "warmupSamples": 6,
+  "minimumViewers": 4,
+  "minimumReactionShare": 0.25,
+  "minimumSpike": 1.7,
+  "broadSurgeMultiplier": 3,
+  "maximumUserShare": 0.65,
+  "repeatedCopiesPerViewer": 2.5
+}

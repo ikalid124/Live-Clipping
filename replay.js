@@ -50,6 +50,20 @@ if (
           d.add(records[cursor++], t);
       } else for (const m of frame(p, i, t)) d.add(m, t);
       const e = d.sample(t);
+      if (
+        process.argv.includes("--explain") &&
+        !e.active &&
+        e.n &&
+        e.multiplier >= 1.7
+      )
+        console.log({
+          channel: p.name,
+          time: new Date(t).toISOString(),
+          score: e.score,
+          unique: e.users,
+          spike: e.multiplier,
+          reasons: e.rejected,
+        });
       if (e.active) {
         if (t - last > 20000) {
           hits.push(t);

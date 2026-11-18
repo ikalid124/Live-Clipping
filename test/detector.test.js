@@ -38,7 +38,7 @@ for (const scenario of ["normal", "single user", "bot flood", "growth", "raid"])
         for (const m of rows) {
           if (scenario === "normal") m.text = "hello";
           if (scenario === "single user") m.user = "spam";
-          if (scenario === "bot flood") m.text = "wow";
+          if (scenario === "bot flood") { m.text = "wow"; m.user = "repeater"+(Number(m.id.split("-")[1])%5); }
           if (scenario === "raid" && i > 16) m.text = "ordinary";
           d.add(m, t);
         }

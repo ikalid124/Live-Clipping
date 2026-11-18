@@ -14,4 +14,6 @@ test("Discord rejects missing credentials and surfaces delivery failure without 
   );
   const body = JSON.parse(f.mock.calls[0].arguments[1].body);
   assert.deepEqual(body.allowed_mentions, { parse: [] });
+  f.mock.mockImplementation(async () => new Response(null, { status: 204 }));
+  await discord("https://discord.com/api/webhooks/123/mock", "Controlled highlight");
 });

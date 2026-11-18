@@ -98,7 +98,8 @@ try {
       if (await evaluate(expression)) return;
       await new Promise((r) => setTimeout(r, 100));
     }
-    throw Error("Page check failed: " + expression);
+    throw Error("Page check failed: " + expression + " · " +
+      await evaluate("document.querySelector('#notice')?.textContent"));
   };
   await wait("document.querySelectorAll('.event').length===3");
   assert.ok(await evaluate("document.querySelector('canvas').width>0"));
@@ -108,7 +109,7 @@ try {
   await evaluate("document.querySelector('video').play(); true");
   await wait("document.querySelector('video').currentTime > 0.1");
   await evaluate(
-    "document.querySelector('textarea').value='Browser smoke test';document.querySelector('[value=Approved]').click()",
+    "document.querySelector('[name=rating]').value='Excellent';document.querySelector('textarea').value='Browser smoke test';document.querySelector('[value=Approved]').click()",
   );
   await wait(
     "document.querySelector('.tag')?.textContent.includes('Approved')",
@@ -117,6 +118,16 @@ try {
   await wait("document.querySelector('#filter')");
   await evaluate(
     "let f=document.querySelector('#filter');f.value='Approved';f.dispatchEvent(new Event('change',{bubbles:true}))",
+  );
+  await wait("document.querySelectorAll('.event').length===1");
+  await evaluate(
+    "let scope=document.querySelector('#source');scope.value='Twitch';scope.dispatchEvent(new Event('change',{bubbles:true}))",
+  );
+  await wait(
+    "document.querySelector('.sub')?.textContent.includes('0 pending in Twitch')",
+  );
+  await evaluate(
+    "scope=document.querySelector('#source');scope.value='Demo';scope.dispatchEvent(new Event('change',{bubbles:true}))",
   );
   await wait("document.querySelectorAll('.event').length===1");
   await evaluate("location.hash='channels'");
@@ -128,9 +139,25 @@ try {
   await evaluate("location.hash='settings'");
   await wait("document.querySelector('form[data-action=settings]')");
   await evaluate(
-    "document.querySelector('[name=threshold]').value=77;document.querySelector('form').requestSubmit()",
+    "document.querySelector('[name=threshold]').value=77;document.querySelector('form[data-action=settings]').requestSubmit()",
   );
   await wait("document.querySelector('[name=threshold]')?.defaultValue==='77'");
+  await evaluate("document.querySelector('#testDiscord').click()");
+  await wait("document.querySelector('#notice').textContent.includes('DISCORD_WEBHOOK_URL')");
+  await evaluate("const preset=document.querySelector('#alertPreset');preset.value='90';preset.dispatchEvent(new Event('change',{bubbles:true}))");
+  assert.equal(await evaluate("document.querySelector('[name=notify]').value"), "90");
+  await evaluate("window.realNotification=window.Notification;Object.defineProperty(window,'Notification',{configurable:true,value:{permission:'denied',requestPermission:async()=> 'denied'}});document.querySelector('#testBrowser').click()");
+  await wait("document.querySelector('#notice').textContent.includes('permission is denied')");
+  await evaluate("Object.defineProperty(window,'Notification',{configurable:true,value:window.realNotification});delete window.realNotification");
+  await evaluate("const setup=document.querySelector('form[data-action=configureTwitch]');setup.elements.clientId.value='fixture-client';setup.elements.clientSecret.value='fixture-secret';setup.requestSubmit()");
+  await wait("document.querySelector('#authorize') && document.querySelector('[name=clientSecret]').value === ''");
+  await evaluate("window.normalFetch=window.fetch;window.fetch=async(...args)=>{if(String(args[0]).includes('/api/state'))await new Promise(r=>setTimeout(r,6000));return window.normalFetch(...args)};location.hash='activity'");
+  await wait("document.querySelector('#crumb').textContent==='Live activity' && document.querySelector('canvas')");
+  await evaluate("window.fetch=window.normalFetch;delete window.normalFetch");
+  await evaluate("window.normalFetch=window.fetch;window.fetch=async()=>{throw Error('Controlled network outage')};location.hash='settings'");
+  await wait("document.querySelector('#health').textContent==='Monitoring status unavailable'");
+  await evaluate("window.fetch=window.normalFetch;delete window.normalFetch;location.hash='dashboard'");
+  await wait("document.querySelector('#notice').textContent==='' && document.querySelector('canvas')");
   console.log(
     "Passed browser overview, chart, approval, queue filter, watchlist and settings checks.",
   );

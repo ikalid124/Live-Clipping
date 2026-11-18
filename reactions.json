@@ -1,6 +1,7 @@
 {
-  "Laughter": ["lol", "lmao", "kekw", "lul", "😂"],
-  "Surprise": ["wow", "omg", "no way", "😱"],
-  "Excitement": ["pog", "pogchamp", "clutch", "lets go"],
-  "Clip request": ["clip it", "clip that"]
+  "Laughter": ["lol", "lul", "lmao", "lmfao", "kekw", "omegalul", "😂", "🤣"],
+  "Surprise": ["omg", "wow", "no way", "aint no way", "😱"],
+  "Excitement": ["pog", "pogchamp", "clutch", "lets go", "letsgo", "pogu"],
+  "Clip request": ["clip it", "clip that"],
+  "Shock": ["shocked", "speechless", "jaw dropped", "wtf just happened"]
 }

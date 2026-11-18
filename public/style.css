@@ -279,3 +279,8 @@ summary {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.scope {min-width: 150px;}
+.toolbar label {min-width: 96px;}
+figure {margin: 14px 0;}
+figcaption {font-size: 13px;}
