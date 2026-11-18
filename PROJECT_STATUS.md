@@ -2,6 +2,8 @@
 
 **Last updated November 17, 2026 · V4 and Git checkpoint**
 
+Published project: https://github.com/ikalid124/Live-Clipping (main). See docs/NEW_COMPUTER.md to clone and continue on another computer; docs/CONVERSATION_HISTORY.md preserves the available project conversation and docs/requests contains the original requirements. Runtime data and credentials remain local.
+
 Real Twitch monitoring produced three natural candidates with timestamped VOD links. GTAMen candidate 538 played in Chrome and its Saved decision survived restart. Both GTAMen and EsfandTV were live and receiving chat at the last check. External notifications require browser permission or a Discord webhook. Read [V4 progress report](V4_PROGRESS_REPORT.md) and [Live test report](LIVE_TEST_REPORT.md) before continuing. The last IPv4 launcher correction awaits verification after an approval-review usage limit.
 
 The requested Git checkpoint captures the accumulated V2–V4 implementation, tests and context documents on branch `codex/streampulse-v4-checkpoint`. Existing Git history begins with checkpoint d6f01c0. Runtime credentials and SQLite data remain outside the source checkpoint.
@@ -58,6 +60,8 @@ The existing account is authenticated with chat-read permission and restores fro
 ## Run history
 
 ### November 17, 2026 — GitHub transfer preparation
+
+Publication completed: pushed the full commit ancestry through 490cf99 to origin/main and verified GitHub's ref matches the local commit. Git Credential Manager authenticated successfully without a GitHub CLI login. This completion note follows that verified upload. The working tree was clean after publication. The initial history scan used an unsupported regex mode; rerunning with Git's PCRE mode succeeded and found only the synthetic test URL in both older commits. No application tests were rerun for documentation-only work. Next reproducible step: clone https://github.com/ikalid124/Live-Clipping.git on the other computer and follow docs/NEW_COMPUTER.md. The Desktop copy remains a separate older copy.
 
 Prepared publication to the user-designated public repository https://github.com/ikalid124/Live-Clipping. Added docs/NEW_COMPUTER.md, the five original request attachments under docs/requests, and docs/CONVERSATION_HISTORY.md containing available user/assistant messages from this project chat. The conversation export excludes internal reasoning, tool logs, screenshots and unrelated chats; local attachment references were replaced. It is a historical transcript, while this file remains the operational handoff. Explicitly ignored node_modules, local environment variants and DPAPI files.
 
